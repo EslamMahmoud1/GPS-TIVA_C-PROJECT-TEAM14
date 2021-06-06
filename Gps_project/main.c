@@ -45,6 +45,45 @@ delay(100);
 // }
 }
 
+
+ void LCD_string(char *str){
+int count=0;
+while(str[count]!='\0'){
+LCD_data(str[count]);
+count++;
+}
+
+}
+
+void init(){
+uint32_t delay;
+SYSCTL_RCGCGPIO_R |= 0x23 ; // port a , b and F activation
+delay = 1; // dummy var
+GPIO_PORTA_LOCK_R = 0X4C4F434B;// the lock register must be set up first
+GPIO_PORTA_CR_R = 0XE0;
+GPIO_PORTA_DEN_R = 0xE0;
+GPIO_PORTA_DIR_R =0xFF;
+GPIO_PORTA_AFSEL_R = 0;
+GPIO_PORTA_PUR_R = 0;
+GPIO_PORTB_LOCK_R = 0X4C4F434B;// the lock register must be set up first
+GPIO_PORTB_CR_R = 0XFF;
+GPIO_PORTB_DEN_R = 0xFF;
+GPIO_PORTB_DIR_R =0xFF;
+GPIO_PORTB_AFSEL_R = 0;
+GPIO_PORTB_PUR_R = 0;
+GPIO_PORTF_LOCK_R = 0X4C4F434B;// the lock register must be set up first
+GPIO_PORTF_CR_R = 0X08;
+GPIO_PORTF_DEN_R = 0x08;
+GPIO_PORTF_DIR_R =0x08;
+GPIO_PORTF_AFSEL_R = 0;
+GPIO_PORTF_PUR_R = 0;
+LCD_command(0x30);
+LCD_command(0x38);
+LCD_command(0x06);
+LCD_command(0x01);
+LCD_command(0x0F);
+} 
+
 int main(){
 init_uart();
 init();
