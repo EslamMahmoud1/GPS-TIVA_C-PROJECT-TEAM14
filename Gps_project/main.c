@@ -84,6 +84,34 @@ LCD_command(0x01);
 LCD_command(0x0F);
 } 
 
+void init_uart(){
+uint32_t delay;
+SYSCTL_RCGCUART_R |= 0x02;
+SYSCTL_RCGCGPIO_R |= 0x04 ;// port c activation
+delay = 1; // dummy var
+UART1_CTL_R &= ~0x00000001;// disable the uart until the init.
+UART1_IBRD_R = 104;
+UART1_FBRD_R = 11;
+UART1_LCRH_R = 0x00000070;
+UART1_CTL_R |= 0x00000001; // enable UART
+GPIO_PORTC_AFSEL_R |= 0x30;
+GPIO_PORTC_DEN_R = 0x30;
+GPIO_PORTC_PCTL_R = (GPIO_PORTC_PCTL_R &0xFF00FFFF) + 0x00220000; // to set 2 in pctl pc4 and pc5
+GPIO_PORTC_AMSEL_R &= ~0x30;// disable analog in pc4-5
+}
+
+
+void LCD_G_rc(int raw,int colu){
+int adress;
+switch (raw){
+case 0 : adress = colu;
+break;
+case 1 : adress = colu + 0x40;
+break;
+}
+LCD_command(adress|0x80);
+}
+
 int main(){
 init_uart();
 init();
