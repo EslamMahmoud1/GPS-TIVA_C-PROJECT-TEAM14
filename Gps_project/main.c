@@ -5,6 +5,20 @@
 #include <string.h>
 #include <math.h>
  
+void SystemInit(){}
+bool is_exeeded(long double d){
+    if(d >= 100)
+        return 1;
+    return 0;
+}
+void delay(uint32_t d){
+    uint32_t i;
+    uint32_t k;
+    for(i=0;i<d;i++){
+        for(k=0;k<11;k++){}
+    }
+}
+
 
 int main(){
 init_uart();
